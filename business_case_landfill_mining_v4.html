@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Case v4 – Landfill Mining</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap');
+:root{
+  --bg:#f5f2eb;--ink:#1a1a18;--mid:#4a4a42;--faint:#d8d4c8;
+  --red:#c0392b;--green:#1a6b3c;--amber:#b5620a;--blue:#1a3a6b;--teal:#0e5c5c;
+  --rule:1.5px solid var(--ink);--rule-thin:1px solid var(--faint);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:13px;line-height:1.65;max-width:1040px;margin:0 auto;padding:36px 32px 80px;}
+header{border-top:3px solid var(--ink);border-bottom:var(--rule);padding:20px 0 16px;margin-bottom:28px;}
+.doc-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px;}
+h1{font-size:22px;font-weight:600;line-height:1.25;}
+.meta-row{display:flex;flex-wrap:wrap;gap:20px;margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mid);border-top:var(--rule-thin);padding-top:10px;}
+.meta-row span b{color:var(--ink);}
+section{margin-bottom:36px;}
+h2{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);border-bottom:var(--rule);padding-bottom:6px;margin-bottom:16px;}
+h3{font-size:13px;font-weight:600;margin:18px 0 8px;}
+.panel{border:1.5px solid var(--teal);margin-bottom:16px;background:#fff;}
+.panel.green{border-color:var(--green);}
+.panel.amber{border-color:var(--amber);}
+.panel.red{border-color:var(--red);}
+.panel.brown{border-color:#7a5230;}
+.panel.purple{border-color:#6b3fa0;}
+.panel-hd{padding:8px 14px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#fff;}
+.panel.default .panel-hd{background:var(--teal);}
+.panel.green .panel-hd{background:var(--green);}
+.panel.amber .panel-hd{background:var(--amber);}
+.panel.red .panel-hd{background:var(--red);}
+.panel.brown .panel-hd{background:#7a5230;}
+.panel.purple .panel-hd{background:#6b3fa0;}
+.panel-body{padding:14px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.ctl{margin-bottom:10px;}
+.ctl label{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:3px;}
+.ctl .row{display:flex;align-items:center;gap:8px;}
+.ctl input[type=range]{flex:1;cursor:pointer;}
+.ctl input[type=range]{accent-color:var(--teal);}
+.panel.green .ctl input[type=range]{accent-color:var(--green);}
+.panel.amber .ctl input[type=range]{accent-color:var(--amber);}
+.panel.red .ctl input[type=range]{accent-color:var(--red);}
+.panel.brown .ctl input[type=range]{accent-color:#7a5230;}
+.panel.purple .ctl input[type=range]{accent-color:#6b3fa0;}
+.vd{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--teal);min-width:86px;text-align:right;}
+.panel.green .vd{color:var(--green)!important;}
+.panel.amber .vd{color:var(--amber)!important;}
+.panel.red .vd{color:var(--red)!important;}
+.panel.brown .vd{color:#7a5230!important;}
+.panel.purple .vd{color:#6b3fa0!important;}
+.sub{font-size:10px;color:var(--mid);margin-top:2px;font-style:italic;}
+.rstrip{display:grid;gap:1px;background:var(--faint);border:var(--rule-thin);margin-top:12px;}
+.rstrip.c3{grid-template-columns:repeat(3,1fr);}
+.rstrip.c4{grid-template-columns:repeat(4,1fr);}
+.rstrip.c5{grid-template-columns:repeat(5,1fr);}
+.rstrip.c6{grid-template-columns:repeat(6,1fr);}
+.rcell{background:var(--bg);padding:10px 12px;}
+.rcell .rl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin-bottom:3px;}
+.rcell .rv{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;}
+.rcell .rn{font-size:10px;color:var(--mid);margin-top:2px;}
+/* mass bar */
+.massbar-wrap{margin-bottom:14px;}
+.massbar{display:flex;height:32px;border:var(--rule);overflow:hidden;font-family:'IBM Plex Mono',monospace;font-size:10px;}
+.massbar div{display:flex;align-items:center;justify-content:center;color:#fff;overflow:hidden;transition:width .25s;white-space:nowrap;font-weight:600;}
+.massbar-legend{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap;font-size:11px;font-family:'IBM Plex Mono',monospace;}
+.massbar-legend span{display:flex;align-items:center;gap:4px;}
+.massbar-legend .dot{display:inline-block;width:10px;height:10px;border-radius:2px;}
+/* pretreat table */
+.pt-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:0;}
+.pt-table thead tr{background:var(--ink);color:var(--bg);}
+.pt-table thead th{padding:6px 10px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;}
+.pt-table thead th.r{text-align:right;}
+.pt-table tbody tr{border-bottom:var(--rule-thin);}
+.pt-table tbody tr.off{opacity:.35;}
+.pt-table tbody td{padding:6px 10px;vertical-align:middle;}
+.pt-table tbody td.r{text-align:right;font-family:'IBM Plex Mono',monospace;}
+.pt-table tfoot tr{background:#e8f4f4;border-top:var(--rule);}
+.pt-table tfoot td{padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;}
+.pt-table tfoot td.r{text-align:right;}
+.mini-range{width:100%;accent-color:var(--teal);}
+.mini-val{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--teal);}
+/* density table */
+table.dtable{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px;}
+table.dtable thead tr{background:var(--ink);color:var(--bg);}
+table.dtable thead th{padding:7px 10px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;}
+table.dtable thead th.r{text-align:right;}
+table.dtable tbody tr{border-bottom:var(--rule-thin);}
+table.dtable tbody tr:hover{background:#eee9df;}
+table.dtable tbody td{padding:7px 10px;}
+table.dtable tbody td.r{text-align:right;font-family:'IBM Plex Mono',monospace;}
+table.dtable tbody td.b{font-weight:600;}
+table.dtable tfoot td{padding:7px 10px;font-size:11px;color:var(--mid);font-style:italic;}
+/* sum tables */
+table.sum{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px;}
+table.sum thead tr{background:var(--ink);color:var(--bg);}
+table.sum thead th{padding:7px 10px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;}
+table.sum thead th.r{text-align:right;}
+table.sum tbody tr{border-bottom:var(--rule-thin);}
+table.sum tbody tr:hover{background:#eee9df;}
+table.sum tbody td{padding:6px 10px;vertical-align:top;}
+table.sum tbody td.r{text-align:right;font-family:'IBM Plex Mono',monospace;}
+table.sum tbody td.n{font-size:10px;color:var(--mid);font-style:italic;}
+.sec-hd td{background:#ddd9ce!important;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:4px 10px!important;color:var(--mid);}
+.tot-cost td{background:#fde8e6!important;font-weight:600;border-top:2px solid var(--red);}
+.tot-rev td{background:#e6f4ec!important;font-weight:600;border-top:2px solid var(--green);}
+/* scenarios */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--faint);border:var(--rule);margin-bottom:20px;}
+.scen{background:var(--bg);padding:16px;}
+.scen .sl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;}
+.scen .sv{font-size:20px;font-weight:600;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;}
+.scen .sd{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--mid);}
+.neg{color:var(--red);}.pos{color:var(--green);}.warn{color:var(--amber);}.teal{color:var(--teal);}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--faint);border:var(--rule);margin-bottom:20px;}
+.cmp-col{background:var(--bg);padding:16px;}
+.cmp-col h4{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);border-bottom:var(--rule-thin);padding-bottom:6px;margin-bottom:10px;}
+.cmp-row{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;}
+.cmp-row .lbl{color:var(--mid);}
+.cmp-row .val{font-family:'IBM Plex Mono',monospace;font-weight:600;}
+.export-area{border:var(--rule);background:#fff;padding:12px;overflow-x:auto;margin-top:10px;}
+.export-area pre{font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.6;white-space:pre;margin:0;}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:6px 16px;cursor:pointer;letter-spacing:.1em;text-transform:uppercase;border:1.5px solid;}
+.btn-ink{border-color:var(--ink);background:var(--ink);color:var(--bg);}
+.btn-teal{border-color:var(--teal);background:#e8f4f4;color:var(--teal);}
+.btn-green{border-color:var(--green);background:#e6f4ec;color:var(--green);}
+.btn-red{border-color:var(--red);background:#fde8e6;color:var(--red);}
+.btn-amber{border-color:var(--amber);background:#fff8e6;color:var(--amber);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.note-inline{background:#fff;border:var(--rule-thin);border-left:3px solid var(--mid);padding:10px 14px;font-size:11px;color:var(--mid);margin:10px 0;}
+footer{border-top:var(--rule);padding-top:12px;font-size:10px;color:var(--mid);font-family:'IBM Plex Mono',monospace;}
+.ref-list{list-style:none;margin-top:6px;}
+.ref-list li{margin-bottom:3px;}
+.ref-list a{color:var(--blue);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="doc-label">Business Case · Landfill Mining v4 · Bilancio di massa a 4 frazioni</div>
+  <h1>Landfill Mining — Discarica RSU 1.000.000 m³ / 50.000 m²<br>Frazioni: Soil-like · Inerti grezzi · Metalli · Combustibile → WtE/CDR</h1>
+  <div class="meta-row">
+    <span><b>Massa totale:</b> 700.000 t</span>
+    <span><b>Superficie:</b> 50.000 m²</span>
+    <span><b>Volume:</b> 1.000.000 m³</span>
+    <span><b>Densità in posto:</b> 0,70 t/m³ (default)</span>
+    <span><b>Versione:</b> 4.0 — Luglio 2026</span>
+  </div>
+</header>
+
+<!-- ═══ SEZ 00: TABELLA DENSITÀ ═══ -->
+<section>
+  <h2>00 · Tabella densità assunte nel modello</h2>
+  <table class="dtable">
+    <thead>
+      <tr>
+        <th>Materiale / Frazione</th>
+        <th class="r">Densità (t/m³)</th>
+        <th>Condizione</th>
+        <th>Range letteratura</th>
+        <th>Fonte / Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="b">Rifiuto in posto nella discarica (estratto)</td>
+        <td class="r b">0,70</td>
+        <td>RSU storica 20–40 anni, compressione moderata</td>
+        <td>0,65–1,00 t/m³</td>
+        <td>Fascia conservativa. Discariche >20 m con >30 anni: 0,85–1,0 t/m³. Usata per calcolare massa totale dal volume (1.000.000 m³ × 0,70 = 700.000 t)</td>
+      </tr>
+      <tr>
+        <td class="b">Frazione fine / soil-like (&lt;20 mm)</td>
+        <td class="r b">1,20</td>
+        <td>Materiale stabilizzato, umido, compatto</td>
+        <td>1,0–1,4 t/m³</td>
+        <td>Kaartinen 2013, Hernández Parrodi 2019. Usata per convertire t → m³ reinterrati nella nuova discarica</td>
+      </tr>
+      <tr>
+        <td class="b">Inerti grezzi (pietre, vetro, ceramica &gt;20 mm)</td>
+        <td class="r b">1,50</td>
+        <td>Pezzatura variabile, non compattati</td>
+        <td>1,3–1,8 t/m³</td>
+        <td>Quaghebeur 2013. Se reinterrati come fondo discarica: densità finale 1,5–1,6 t/m³. Usata per conversione t → m³</td>
+      </tr>
+      <tr>
+        <td class="b">Metalli ferrosi (rottame)</td>
+        <td class="r b">2,50</td>
+        <td>Rottame sfuso misto</td>
+        <td>1,5–3,5 t/m³</td>
+        <td>Riferimento rottame Fe sfuso. Volume trascurabile nel bilancio discarica</td>
+      </tr>
+      <tr>
+        <td class="b">Metalli non ferrosi (Al, Cu, Zn)</td>
+        <td class="r b">2,00</td>
+        <td>Mix sfuso</td>
+        <td>1,5–3,0 t/m³</td>
+        <td>Volume trascurabile nel bilancio discarica</td>
+      </tr>
+      <tr>
+        <td class="b">Frazione combustibile (plastica, legno, tessili, carta)</td>
+        <td class="r b">0,20</td>
+        <td>Materiale sfuso, eterogeneo, parzialmente degradato</td>
+        <td>0,10–0,30 t/m³</td>
+        <td>Densità bassa: la combustibile occupa volume ma pesa poco. PCI: 10–18 MJ/kg s.s. (Quaghebeur 2013)</td>
+      </tr>
+      <tr>
+        <td class="b">Rifiuto nuovo nella nuova discarica</td>
+        <td class="r b">0,75</td>
+        <td>RSU compattato da mezzi operativi standard</td>
+        <td>0,50–1,10 t/m³</td>
+        <td>Cursore regolabile in sezione 04. RSU compattato da cingolato: 0,7–0,9; FOS: 0,9–1,1</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr><td colspan="5">⚠ Le densità di conversione t→m³ per soil-like (1,20) e inerti grezzi (1,50) sono usate per calcolare il volume sottratto alla nuova discarica quando queste frazioni vengono reinterrate come materiale di fondo/copertura.</td></tr>
+    </tfoot>
+  </table>
+</section>
+
+<!-- ═══ SEZ 01: BILANCIO DI MASSA ═══ -->
+<section>
+  <h2>01 · Bilancio di massa — 4 frazioni fisse + residuo combustibile</h2>
+  <div class="panel default">
+    <div class="panel-hd">⚖ Composizione del rifiuto escavato — la somma deve essere = 100%</div>
+    <div class="panel-body">
+      <div class="sub" style="margin-bottom:12px;">Le prime tre frazioni sono definite con cursori. La <b>frazione combustibile</b> è il residuo automatico (100% − soil-like% − inerti% − Fe% − non-Fe% − CDR%). È la quota che va a WtE. Il CDR (default 0%) si sottrae anch'esso dalla combustibile totale.</div>
+
+      <!-- MASS BAR -->
+      <div class="massbar-wrap">
+        <div class="massbar">
+          <div id="mb_sl"  style="background:#7a5230;"></div>
+          <div id="mb_in"  style="background:#c0392b;"></div>
+          <div id="mb_fe"  style="background:#1a6b3c;"></div>
+          <div id="mb_nfe" style="background:#2e9c5e;"></div>
+          <div id="mb_cdr" style="background:#b5620a;"></div>
+          <div id="mb_wte" style="background:#0e5c5c;"></div>
+          <div id="mb_ov"  style="background:#888;font-size:9px;"></div>
+        </div>
+        <div class="massbar-legend">
+          <span><span class="dot" style="background:#7a5230"></span>Soil-like</span>
+          <span><span class="dot" style="background:#c0392b"></span>Inerti grezzi</span>
+          <span><span class="dot" style="background:#1a6b3c"></span>Fe</span>
+          <span><span class="dot" style="background:#2e9c5e"></span>non-Fe</span>
+          <span><span class="dot" style="background:#b5620a"></span>CDR</span>
+          <span><span class="dot" style="background:#0e5c5c"></span>Combustibile→WtE</span>
+          <span style="margin-left:auto;font-weight:600;">Totale: <span id="mb_tot" style="color:var(--green)">100%</span> &nbsp;|&nbsp; Combustibile WtE: <span id="mb_wte_lbl" style="color:var(--teal)">—</span></span>
+        </div>
+      </div>
+
+      <div class="g3">
+        <div class="ctl">
+          <label>Frazione fine / soil-like (% massa)</label>
+          <div class="row"><input type="range" id="sl_pct" min="10" max="60" value="30" step="2.5"><span class="vd" id="sl_pct_v" style="color:#7a5230">30%</span></div>
+          <div class="sub">Default 30%. Range tipico RSU: 25–55%. Aumenta con l'età. Destino: reinterro fondo discarica o smaltimento.</div>
+        </div>
+        <div class="ctl">
+          <label>Inerti grezzi &gt;20mm (% massa)</label>
+          <div class="row"><input type="range" id="in_pct" min="0" max="30" value="10" step="2.5"><span class="vd" id="in_pct_v" style="color:var(--red)">10%</span></div>
+          <div class="sub">Default 10%. Pietre, vetro, ceramica, frammenti C&D. Smaltimento in discarica inerti o riuso aggregati.</div>
+        </div>
+        <div class="ctl">
+          <label>CDR separato (% massa) — default 0%</label>
+          <div class="row"><input type="range" id="cdr_pct" min="0" max="40" value="0" step="2.5"><span class="vd" id="cdr_pct_v" style="color:var(--amber)">0%</span></div>
+          <div class="sub">Quota combustibile destinata a CDR/cementifici invece di WtE. Default 0%: tutto il combustibile va a WtE.</div>
+        </div>
+      </div>
+
+      <!-- RIEPILOGO FRAZIONI -->
+      <div class="rstrip c6" style="margin-top:4px;">
+        <div class="rcell"><div class="rl">Soil-like</div><div class="rv" id="r_sl_t" style="color:#7a5230">210.000 t</div></div>
+        <div class="rcell"><div class="rl">Inerti grezzi</div><div class="rv neg" id="r_in_t">70.000 t</div></div>
+        <div class="rcell"><div class="rl">Metalli Fe+nFe</div><div class="rv pos" id="r_met_t">16.800 t</div></div>
+        <div class="rcell"><div class="rl">CDR separato</div><div class="rv warn" id="r_cdr_t">0 t</div></div>
+        <div class="rcell"><div class="rl">Combustibile→WtE</div><div class="rv teal" id="r_wte_t">403.200 t</div></div>
+        <div class="rcell"><div class="rl">TOTALE</div><div class="rv" id="r_tot_t">700.000 t</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 02: SOIL-LIKE ═══ -->
+<section>
+  <h2>02 · Frazione fine / Soil-like — destino e costi</h2>
+  <div class="panel brown">
+    <div class="panel-hd">🌱 Soil-like — reinterro fondo discarica e/o smaltimento</div>
+    <div class="panel-body">
+      <div class="sub" style="margin-bottom:10px;">Il soil-like ha due possibili destini: <b>reinterro</b> come materiale di fondo/copertura nella nuova discarica (riduce volume utile, costo zero) oppure <b>smaltimento</b> in discarica autorizzata (costo). La quota a vendita non è prevista per il soil-like (qualità insufficiente per EoW). La somma reinterro+smaltimento = 100% sempre.</div>
+      <div class="g3">
+        <div class="ctl">
+          <label>% reinterro soil-like (nella nuova discarica)</label>
+          <div class="row"><input type="range" id="sl_refill_pct" min="0" max="100" value="100" step="5" oninput="clampSL('refill')"><span class="vd" id="sl_refill_v" style="color:#7a5230">100%</span></div>
+          <div class="sub"><b>Riduce il volume utile della nuova discarica</b> (densità soil-like reinterrato: 1,2 t/m³). Costo zero.</div>
+        </div>
+        <div class="ctl">
+          <label>% smaltimento soil-like (discarica autorizzata)</label>
+          <div class="row"><input type="range" id="sl_disp_pct" min="0" max="100" value="0" step="5" oninput="clampSL('disp')"><span class="vd" id="sl_disp_v" style="color:var(--red)">0%</span></div>
+          <div class="sub">= 100% − reinterro%. Aggiornato automaticamente.</div>
+        </div>
+        <div class="ctl">
+          <label>Costo smaltimento soil-like (€/t)</label>
+          <div class="row"><input type="range" id="sl_disp_cost" min="0" max="200" value="0" step="5"><span class="vd" id="sl_disp_cost_v" style="color:#7a5230">0 €/t</span></div>
+          <div class="sub">Range 0–200 €/t. Default 0 (tutto reinterrato). Se contaminato: 50–200 €/t. Se inerte pulito: 20–50 €/t.</div>
+        </div>
+      </div>
+      <div class="rstrip c4">
+        <div class="rcell"><div class="rl">t soil-like totali</div><div class="rv" id="r_sl_tot" style="color:#7a5230">210.000 t</div></div>
+        <div class="rcell"><div class="rl">t reinterrate</div><div class="rv warn" id="r_sl_refill">210.000 t</div><div class="rn">↓ vol. nuova disc.</div></div>
+        <div class="rcell"><div class="rl">t smaltite</div><div class="rv neg" id="r_sl_disp">0 t</div></div>
+        <div class="rcell"><div class="rl">Costo smaltimento SL</div><div class="rv neg" id="r_sl_cost_M">0,00 M€</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 03: INERTI GREZZI ═══ -->
+<section>
+  <h2>03 · Inerti grezzi — destino e costi</h2>
+  <div class="panel red">
+    <div class="panel-hd">🪨 Inerti grezzi (&gt;20mm) — smaltimento, reinterro o vendita aggregati</div>
+    <div class="panel-body">
+      <div class="sub" style="margin-bottom:10px;">Gli inerti grezzi (pietre, vetro, ceramica) hanno tre destini. Reinterro e smaltimento sono i cursori attivi; la quota a vendita è residuale automatica.</div>
+      <div class="g3">
+        <div class="ctl">
+          <label>% reinterro inerti grezzi</label>
+          <div class="row"><input type="range" id="in_refill_pct" min="0" max="100" value="0" step="5" oninput="clampIN('refill')"><span class="vd" id="in_refill_v" style="color:var(--amber)">0%</span></div>
+          <div class="sub">Usati come fondo/copertura discarica (densità 1,5 t/m³). Riduce volume utile nuova discarica.</div>
+        </div>
+        <div class="ctl">
+          <label>% smaltimento inerti grezzi</label>
+          <div class="row"><input type="range" id="in_disp_pct" min="0" max="100" value="80" step="5" oninput="clampIN('disp')"><span class="vd" id="in_disp_v" style="color:var(--red)">80%</span></div>
+          <div class="sub">Discarica inerti o smaltimento autorizzato.</div>
+        </div>
+        <div class="ctl">
+          <label>% vendita aggregato (EoW) — calcolata</label>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--green);margin-top:4px;" id="in_sell_v">20%</div>
+          <div class="sub">= 100% − reinterro% − smaltimento%. Ricavo se EoW (DM 127/2024).</div>
+        </div>
+      </div>
+      <div class="g2" style="margin-top:8px;">
+        <div class="ctl">
+          <label>Costo smaltimento inerti grezzi (€/t)</label>
+          <div class="row"><input type="range" id="in_disp_cost" min="30" max="200" value="70" step="5"><span class="vd" id="in_disp_cost_v" style="color:var(--red)">70 €/t</span></div>
+          <div class="sub">Range 30–200 €/t. Default 70 €/t. Dipende da: distanza impianto, classificazione EWC, tassa regionale.</div>
+        </div>
+        <div class="ctl">
+          <label>Prezzo aggregato riciclato EoW (€/t)</label>
+          <div class="row"><input type="range" id="in_sell_price" min="0" max="20" value="5" step="1"><span class="vd" id="in_sell_price_v" style="color:var(--green)">5 €/t</span></div>
+          <div class="sub">0 = non commerciabile. 5–10 €/t se EoW ex DM 127/2024. Mercato molto limitato.</div>
+        </div>
+      </div>
+      <div class="rstrip c5">
+        <div class="rcell"><div class="rl">t inerti grezzi</div><div class="rv neg" id="r_in_tot">70.000 t</div></div>
+        <div class="rcell"><div class="rl">t reinterrate</div><div class="rv warn" id="r_in_refill">0 t</div><div class="rn">↓ vol. disc.</div></div>
+        <div class="rcell"><div class="rl">t smaltite</div><div class="rv neg" id="r_in_disp">56.000 t</div></div>
+        <div class="rcell"><div class="rl">t vendute EoW</div><div class="rv pos" id="r_in_sell">14.000 t</div></div>
+        <div class="rcell"><div class="rl">Netto inerti grezzi</div><div class="rv neg" id="r_in_net">−3,78 M€</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 04: METALLI ═══ -->
+<section>
+  <h2>04 · Metalli — Fe e non-Fe</h2>
+  <div class="panel green">
+    <div class="panel-hd">🔩 Metalli ferrosi e non ferrosi</div>
+    <div class="panel-body">
+      <div class="g4">
+        <div class="ctl">
+          <label>Resa Fe (% su massa totale)</label>
+          <div class="row"><input type="range" id="fe_pct" min="0.5" max="5" value="2" step="0.25"><span class="vd" id="fe_pct_v">2,0%</span></div>
+          <div class="sub">RSU vecchia: 1,5–3,5%.</div>
+        </div>
+        <div class="ctl">
+          <label>Prezzo rottame Fe (€/t)</label>
+          <div class="row"><input type="range" id="fe_price" min="60" max="300" value="120" step="5"><span class="vd" id="fe_price_v">120 €/t</span></div>
+          <div class="sub">Mercato IT 2024–25: 90–150 €/t.</div>
+        </div>
+        <div class="ctl">
+          <label>Resa non-Fe (% su massa totale)</label>
+          <div class="row"><input type="range" id="nfe_pct" min="0.1" max="1.5" value="0.4" step="0.1"><span class="vd" id="nfe_pct_v">0,4%</span></div>
+          <div class="sub">Al, Cu, Zn. Solo con Eddy Current.</div>
+        </div>
+        <div class="ctl">
+          <label>Prezzo non-Fe medio (€/t)</label>
+          <div class="row"><input type="range" id="nfe_price" min="300" max="3000" value="1200" step="50"><span class="vd" id="nfe_price_v">1.200 €/t</span></div>
+          <div class="sub">Mix Al/Cu/Zn. Default conservativo.</div>
+        </div>
+      </div>
+      <div class="rstrip c4">
+        <div class="rcell"><div class="rl">t Fe</div><div class="rv" id="r_fe_t">14.000 t</div></div>
+        <div class="rcell"><div class="rl">Ricavo Fe</div><div class="rv pos" id="r_fe_M">+1,68 M€</div></div>
+        <div class="rcell"><div class="rl">t non-Fe</div><div class="rv" id="r_nfe_t">2.800 t</div></div>
+        <div class="rcell"><div class="rl">Ricavo non-Fe</div><div class="rv pos" id="r_nfe_M">+3,36 M€</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 05: WtE + CDR ═══ -->
+<section>
+  <h2>05 · Frazione combustibile — WtE e CDR</h2>
+  <div class="panel default" style="margin-bottom:14px;">
+    <div class="panel-hd">⚙ WtE — Termoutilizzatore (quota combustibile residuale)</div>
+    <div class="panel-body">
+      <div class="sub" style="margin-bottom:10px;">La quota WtE è il <b>residuo automatico</b> del bilancio di massa. Non ha un cursore diretto: aumenta riducendo le altre frazioni.</div>
+      <div class="g2">
+        <div class="ctl">
+          <label>Costo conferimento WtE (€/t)</label>
+          <div class="row"><input type="range" id="wte_cost" min="0" max="300" value="55" step="1"><span class="vd" id="wte_cost_v">55 €/t</span></div>
+          <div class="sub">Range 0–300 €/t. Tipico IT fuori capitolato: 50–90 €/t. Ridotto dai pretrattamenti (sconto automatico).</div>
+        </div>
+        <div class="ctl">
+          <label>Ricavo energia WtE (€/t conferita)</label>
+          <div class="row"><input type="range" id="wte_rev" min="0" max="30" value="0" step="1"><span class="vd" id="wte_rev_v">0 €/t</span></div>
+          <div class="sub">Raro in Italia. 10–30 €/t solo con accordo speciale o incentivo GSE.</div>
+        </div>
+      </div>
+      <div class="rstrip c4">
+        <div class="rcell"><div class="rl">t WtE (residuo)</div><div class="rv teal" id="r2_wte_t">—</div></div>
+        <div class="rcell"><div class="rl">WtE effettivo (dopo sconti)</div><div class="rv warn" id="r_wte_eff">—</div></div>
+        <div class="rcell"><div class="rl">Costo conf. WtE</div><div class="rv neg" id="r_wte_cost_M">—</div></div>
+        <div class="rcell"><div class="rl">Ricavo energia WtE</div><div class="rv pos" id="r_wte_rev_M">0,00 M€</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel amber">
+    <div class="panel-hd">🔥 CDR/RDF — quota separata dalla combustibile (default 0%)</div>
+    <div class="panel-body">
+      <div class="g3">
+        <div class="ctl">
+          <label>Prezzo CDR netto (€/t)</label>
+          <div class="row"><input type="range" id="cdr_price" min="5" max="80" value="25" step="2.5"><span class="vd" id="cdr_price_v">25 €/t</span></div>
+          <div class="sub">Mercato IT: 15–50 €/t. CDR da discarica: qualità inferiore a RSU fresco.</div>
+        </div>
+        <div class="ctl">
+          <label>Costo trattamento CDR aggiuntivo (€/t)</label>
+          <div class="row"><input type="range" id="cdr_cost" min="0" max="30" value="8" step="1"><span class="vd" id="cdr_cost_v">8 €/t</span></div>
+          <div class="sub">Triturazione fine + qualifica cementifici. Aggiuntivo ai pretrattamenti SEZ 06.</div>
+        </div>
+      </div>
+      <div class="rstrip c4">
+        <div class="rcell"><div class="rl">t CDR</div><div class="rv warn" id="r2_cdr_t">0 t</div></div>
+        <div class="rcell"><div class="rl">Ricavo CDR lordo</div><div class="rv" id="r_cdr_gross">0,0 M€</div></div>
+        <div class="rcell"><div class="rl">Costo tratt. CDR</div><div class="rv neg" id="r_cdr_cost_M">0,0 M€</div></div>
+        <div class="rcell"><div class="rl">Ricavo CDR netto</div><div class="rv" id="r_cdr_net">0,0 M€</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 06: PRETRATTAMENTI ═══ -->
+<section>
+  <h2>06 · Pretrattamenti — fasi configurabili</h2>
+  <div class="panel default">
+    <div class="panel-hd">🔧 Stadi di pretrattamento — attiva/disattiva + costo unitario</div>
+    <div class="panel-body">
+      <div class="sub" style="margin-bottom:10px;">Ogni fase attiva riduce il costo WtE effettivo (rifiuto più omogeneo). WtE eff. = costo base − Σ sconti fasi attive.</div>
+      <table class="pt-table">
+        <thead><tr>
+          <th>Fase</th><th style="width:50px;text-align:center;">Attiva</th>
+          <th>Costo €/t</th><th class="r">€/t att.</th><th class="r">Tot. M€</th><th class="r">Sconto WtE</th>
+        </tr></thead>
+        <tbody>
+          <tr id="ptr1"><td><b>Vagliatura grossolana</b> — tamburo, sep. &gt;80mm/&lt;20mm. Necessaria per WtE.</td>
+            <td style="text-align:center"><input type="checkbox" id="c1" checked onchange="calc()" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer;"></td>
+            <td><div class="row" style="gap:6px"><input type="range" class="mini-range" id="r1" min="1" max="12" value="4" step="0.5" oninput="calc()"><span class="mini-val" id="v1">4,0 €/t</span></div></td>
+            <td class="r" id="a1">4,0</td><td class="r" id="m1">2,80 M€</td><td class="r" style="color:var(--green)">−3 €/t</td></tr>
+          <tr id="ptr2"><td><b>Separazione magnetica Fe</b> — nastro/tamburo magnetico. Obbligatoria per WtE.</td>
+            <td style="text-align:center"><input type="checkbox" id="c2" checked onchange="calc()" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer;"></td>
+            <td><div class="row" style="gap:6px"><input type="range" class="mini-range" id="r2" min="0.5" max="5" value="1.5" step="0.5" oninput="calc()"><span class="mini-val" id="v2">1,5 €/t</span></div></td>
+            <td class="r" id="a2">1,5</td><td class="r" id="m2">1,05 M€</td><td class="r" style="color:var(--green)">−1 €/t</td></tr>
+          <tr id="ptr3"><td><b>Eddy Current non-Fe</b> — rimozione Al/Cu/Zn. Aumenta ricavo metalli.</td>
+            <td style="text-align:center"><input type="checkbox" id="c3" checked onchange="calc()" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer;"></td>
+            <td><div class="row" style="gap:6px"><input type="range" class="mini-range" id="r3" min="0.5" max="6" value="2" step="0.5" oninput="calc()"><span class="mini-val" id="v3">2,0 €/t</span></div></td>
+            <td class="r" id="a3">2,0</td><td class="r" id="m3">1,40 M€</td><td class="r" style="color:var(--green)">−0,5 €/t</td></tr>
+          <tr id="ptr4"><td><b>Bio-essiccazione parziale</b> — umidità 50%→30%, ↑PCI. Costosa (2–4 sett.).</td>
+            <td style="text-align:center"><input type="checkbox" id="c4" checked onchange="calc()" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer;"></td>
+            <td><div class="row" style="gap:6px"><input type="range" class="mini-range" id="r4" min="5" max="25" value="12" step="1" oninput="calc()"><span class="mini-val" id="v4">12 €/t</span></div></td>
+            <td class="r" id="a4">12,0</td><td class="r" id="m4">8,40 M€</td><td class="r" style="color:var(--green)">−8 €/t</td></tr>
+          <tr id="ptr5"><td><b>Triturazione / riduzione pezzatura</b> — &lt;200mm per capitolato WtE.</td>
+            <td style="text-align:center"><input type="checkbox" id="c5" checked onchange="calc()" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer;"></td>
+            <td><div class="row" style="gap:6px"><input type="range" class="mini-range" id="r5" min="3" max="18" value="7" step="1" oninput="calc()"><span class="mini-val" id="v5">7 €/t</span></div></td>
+            <td class="r" id="a5">7,0</td><td class="r" id="m5">4,90 M€</td><td class="r" style="color:var(--green)">−5 €/t</td></tr>
+          <tr id="ptr6"><td><b>Analisi chimica / classificazione EWC</b> — obbligatoria per accettazione WtE.</td>
+            <td style="text-align:center"><input type="checkbox" id="c6" checked onchange="calc()" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer;"></td>
+            <td><div class="row" style="gap:6px"><input type="range" class="mini-range" id="r6" min="0.5" max="4" value="1" step="0.5" oninput="calc()"><span class="mini-val" id="v6">1,0 €/t</span></div></td>
+            <td class="r" id="a6">1,0</td><td class="r" id="m6">0,70 M€</td><td class="r" style="color:var(--mid)">—</td></tr>
+        </tbody>
+        <tfoot><tr>
+          <td colspan="2">Totale pretrattamenti attivi</td><td></td>
+          <td class="r" id="pt_ept">27,5 €/t</td>
+          <td class="r" id="pt_M">19,25 M€</td>
+          <td class="r" style="color:var(--green)" id="pt_disc">−17,5 €/t</td>
+        </tr></tfoot>
+      </table>
+      <div class="rstrip c4" style="margin-top:12px;">
+        <div class="rcell"><div class="rl">WtE base</div><div class="rv" id="r_wte_base">55 €/t</div></div>
+        <div class="rcell"><div class="rl">Sconto pretratt.</div><div class="rv pos" id="r_wte_disc">−17,5 €/t</div></div>
+        <div class="rcell"><div class="rl">WtE effettivo</div><div class="rv warn" id="r_wte_eff2">37,5 €/t</div></div>
+        <div class="rcell"><div class="rl">t WtE</div><div class="rv teal" id="r_wte_t2">—</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 07: NUOVA DISCARICA ═══ -->
+<section>
+  <h2>07 · Nuova discarica sul sito liberato</h2>
+  <div class="panel green">
+    <div class="panel-hd">🏗 Volume utile netto — ridotto dal reinterro di soil-like e inerti grezzi</div>
+    <div class="panel-body">
+      <div class="sub" style="margin-bottom:10px;">Volume utile netto = volume lordo liberato − vol. occupato da soil-like reinterrato (÷1,2 t/m³) − vol. occupato da inerti grezzi reinterrati (÷1,5 t/m³).</div>
+      <div class="g4">
+        <div class="ctl">
+          <label>Volume lordo liberabile (m³)</label>
+          <div class="row"><input type="range" id="nl_vol" min="300000" max="1000000" value="750000" step="25000"><span class="vd" id="nl_vol_v">750.000</span></div>
+          <div class="sub">70–90% del volume originale dopo adeguamento fondo.</div>
+        </div>
+        <div class="ctl">
+          <label>Tariffa conferimento (€/t)</label>
+          <div class="row"><input type="range" id="nl_tariff" min="40" max="300" value="90" step="5"><span class="vd" id="nl_tariff_v">90 €/t</span></div>
+          <div class="sub">IT 2024: 60–130 €/t. Fino a 300 €/t in aree con carenza.</div>
+        </div>
+        <div class="ctl">
+          <label>Costo gestione discarica (€/t)</label>
+          <div class="row"><input type="range" id="nl_mgmt" min="30" max="200" value="55" step="5"><span class="vd" id="nl_mgmt_v">55 €/t</span></div>
+          <div class="sub">Operativo + post-gestione + tassa regionale.</div>
+        </div>
+        <div class="ctl">
+          <label>Densità rifiuto nuovo (t/m³)</label>
+          <div class="row"><input type="range" id="nl_density" min="0.5" max="1.1" value="0.75" step="0.05"><span class="vd" id="nl_density_v">0,75 t/m³</span></div>
+          <div class="sub">RSU compattato standard.</div>
+        </div>
+      </div>
+      <div class="g2" style="margin-top:4px;">
+        <div class="ctl">
+          <label>Capex adeguamento sito (M€)</label>
+          <div class="row"><input type="range" id="nl_capex" min="1" max="15" value="5" step="0.5"><span class="vd" id="nl_capex_v">5,0 M€</span></div>
+          <div class="sub">Impermeabilizzazione, drenaggi, biogas, accessi (80–130 €/m²).</div>
+        </div>
+        <div class="ctl">
+          <label>Anni autorizzazione nuova discarica</label>
+          <div class="row"><input type="range" id="nl_auth" min="2" max="10" value="4" step="1"><span class="vd" id="nl_auth_v">4 anni</span></div>
+          <div class="sub">VIA + AIA + variante PRG. Tipico IT: 3–7 anni.</div>
+        </div>
+      </div>
+      <div class="rstrip c5">
+        <div class="rcell"><div class="rl">Vol. lordo</div><div class="rv teal" id="r_nl_gross">750.000 m³</div></div>
+        <div class="rcell"><div class="rl">Vol. SL reinterrato</div><div class="rv warn" id="r_nl_sl_vol">—</div><div class="rn">÷1,2 t/m³</div></div>
+        <div class="rcell"><div class="rl">Vol. IN reinterrato</div><div class="rv warn" id="r_nl_in_vol">—</div><div class="rn">÷1,5 t/m³</div></div>
+        <div class="rcell"><div class="rl">Vol. utile netto</div><div class="rv pos" id="r_nl_net_vol">—</div></div>
+        <div class="rcell"><div class="rl">Margine netto disc.</div><div class="rv pos" id="r_nl_margin">—</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 08: COSTI FISSI ═══ -->
+<section>
+  <h2>08 · Costi fissi e scavo</h2>
+  <div class="panel default">
+    <div class="panel-hd">📋 Voci fisse e costi di scavo regolabili</div>
+    <div class="panel-body">
+      <div class="g3">
+        <div class="ctl">
+          <label>Costo scavo e movimentazione (€/t)</label>
+          <div class="row"><input type="range" id="exc_cost" min="4" max="20" value="11" step="0.5"><span class="vd" id="exc_cost_v">11,0 €/t</span></div>
+          <div class="sub">Include scavo, trasporto interno, emissioni, percolato di scavo.</div>
+        </div>
+        <div class="ctl">
+          <label>Smaltimento pericolosi eventuali (M€)</label>
+          <div class="row"><input type="range" id="haz_cost" min="0" max="5" value="0.7" step="0.1"><span class="vd" id="haz_cost_v">0,7 M€</span></div>
+          <div class="sub">Amianto, rifiuti speciali. Da quantificare dopo caratterizzazione.</div>
+        </div>
+        <div class="ctl">
+          <label>Contingency sui costi variabili (%)</label>
+          <div class="row"><input type="range" id="cont_pct" min="5" max="30" value="15" step="1"><span class="vd" id="cont_pct_v">15%</span></div>
+          <div class="sub">Standard per progetti ambientali con alta incertezza.</div>
+        </div>
+      </div>
+      <div class="rstrip c4">
+        <div class="rcell"><div class="rl">Fase A (caratt.+auth.)</div><div class="rv">2,94 M€</div><div class="rn">fisso</div></div>
+        <div class="rcell"><div class="rl">Scavo + movim.</div><div class="rv" id="r_exc">7,70 M€</div></div>
+        <div class="rcell"><div class="rl">Ripristino + monit.</div><div class="rv">0,80 M€</div><div class="rn">fisso</div></div>
+        <div class="rcell"><div class="rl">PM + H&S + assic.</div><div class="rv">2,10 M€</div><div class="rn">fisso</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 09: SINTESI ═══ -->
+<section>
+  <h2>09 · Sintesi finanziaria</h2>
+  <div class="g2" style="gap:16px;margin-bottom:16px;">
+    <div>
+      <h3>Struttura costi</h3>
+      <table class="sum">
+        <thead><tr><th>Voce</th><th class="r">M€</th></tr></thead>
+        <tbody>
+          <tr class="sec-hd"><td colspan="2">A — Preliminare</td></tr>
+          <tr><td>Caratterizzazione, progettazione, iter auth.</td><td class="r">2,94</td></tr>
+          <tr class="sec-hd"><td colspan="2">B — Scavo</td></tr>
+          <tr><td>Scavo e movimentazione</td><td class="r" id="t_exc">7,70</td></tr>
+          <tr><td>Smaltimento rifiuti pericolosi</td><td class="r" id="t_haz">0,70</td></tr>
+          <tr class="sec-hd"><td colspan="2">C — Pretrattamenti</td></tr>
+          <tr><td>Totale pretrattamenti attivi</td><td class="r" id="t_pt">—</td></tr>
+          <tr class="sec-hd"><td colspan="2">D — Soil-like</td></tr>
+          <tr><td>Smaltimento soil-like</td><td class="r" id="t_sl_cost">0,00</td></tr>
+          <tr class="sec-hd"><td colspan="2">E — Inerti grezzi</td></tr>
+          <tr><td>Smaltimento inerti grezzi</td><td class="r" id="t_in_cost">—</td></tr>
+          <tr class="sec-hd"><td colspan="2">F — WtE / CDR</td></tr>
+          <tr><td>Conferimento WtE (effettivo)</td><td class="r" id="t_wte">—</td></tr>
+          <tr><td>Trattamento aggiuntivo CDR</td><td class="r" id="t_cdr_cost">0,00</td></tr>
+          <tr class="sec-hd"><td colspan="2">G — Nuova discarica</td></tr>
+          <tr><td>Capex adeguamento sito</td><td class="r" id="t_capex">5,00</td></tr>
+          <tr class="sec-hd"><td colspan="2">H — Chiusura</td></tr>
+          <tr><td>Ripristino e monitoraggio</td><td class="r">0,80</td></tr>
+          <tr><td>PM + H&S + assicurazioni</td><td class="r">2,10</td></tr>
+          <tr><td>Contingency</td><td class="r" id="t_cont">—</td></tr>
+          <tr class="tot-cost"><td>TOTALE COSTI</td><td class="r" id="t_tot_cost">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Struttura ricavi</h3>
+      <table class="sum">
+        <thead><tr><th>Voce</th><th class="r">M€</th></tr></thead>
+        <tbody>
+          <tr class="sec-hd"><td colspan="2">Materiali recuperati</td></tr>
+          <tr><td>Metalli ferrosi</td><td class="r" id="t_fe">—</td></tr>
+          <tr><td>Metalli non ferrosi</td><td class="r" id="t_nfe">—</td></tr>
+          <tr><td>CDR netto</td><td class="r" id="t_cdr_net">0,00</td></tr>
+          <tr><td>Aggregati EoW (inerti grezzi)</td><td class="r" id="t_in_sell">—</td></tr>
+          <tr><td>Ricavo energia WtE al conferente</td><td class="r" id="t_wte_rev">0,00</td></tr>
+          <tr class="sec-hd"><td colspan="2">Costi evitati (VA attualizzato)</td></tr>
+          <tr><td>Eliminazione post-gestione (VA 30a r=4%)</td><td class="r">5,25</td></tr>
+          <tr><td>Eliminazione monitoraggio percolato</td><td class="r">1,70</td></tr>
+          <tr class="sec-hd"><td colspan="2">Nuova discarica</td></tr>
+          <tr><td>Margine netto operativo (vita utile)</td><td class="r" id="t_nl_margin">—</td></tr>
+          <tr class="tot-rev"><td>TOTALE RICAVI</td><td class="r" id="t_tot_rev">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PRESET BUTTONS -->
+  <div class="btn-row">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);">Preset →</span>
+    <button class="btn btn-red" onclick="preset('pess')">Pessimistico</button>
+    <button class="btn btn-amber" onclick="preset('base')">Base</button>
+    <button class="btn btn-teal" onclick="preset('opti')">Ottimistico</button>
+  </div>
+
+  <div class="scen-grid">
+    <div class="scen">
+      <div class="sl neg">Scenario pessimistico</div>
+      <div class="sv neg" id="sc_pess">—</div>
+      <div class="sd" id="sc_pess_d">—</div>
+    </div>
+    <div class="scen">
+      <div class="sl warn">Scenario base (cursori correnti)</div>
+      <div class="sv warn" id="sc_base">—</div>
+      <div class="sd" id="sc_base_d">—</div>
+    </div>
+    <div class="scen">
+      <div class="sl teal">Scenario ottimistico</div>
+      <div class="sv teal" id="sc_opti">—</div>
+      <div class="sd" id="sc_opti_d">—</div>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp-col">
+      <h4>v1 scenario base (CDR+TMB separato)</h4>
+      <div class="cmp-row"><span class="lbl">Costi</span><span class="val neg">31,2 M€</span></div>
+      <div class="cmp-row"><span class="lbl">Ricavi</span><span class="val pos">18,3 M€</span></div>
+      <div class="cmp-row"><span class="lbl">Risultato</span><span class="val neg" style="font-size:17px">−12,9 M€</span></div>
+    </div>
+    <div class="cmp-col">
+      <h4>v4 — scenario corrente</h4>
+      <div class="cmp-row"><span class="lbl">Costi</span><span class="val neg" id="c_cost">—</span></div>
+      <div class="cmp-row"><span class="lbl">Ricavi</span><span class="val pos" id="c_rev">—</span></div>
+      <div class="cmp-row"><span class="lbl">Risultato</span><span class="val" id="c_net" style="font-size:17px">—</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEZ 10: EXPORT ═══ -->
+<section>
+  <h2>10 · Export TSV (copiabile in Excel)</h2>
+  <div class="btn-row">
+    <button class="btn btn-ink" onclick="genExport()">⬇ Genera tabella TSV</button>
+    <button class="btn btn-teal" id="btnCopy" onclick="copyExport()" style="display:none">⎘ Copia negli appunti</button>
+    <span id="copyOk" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green)">✓ Copiato!</span>
+  </div>
+  <div id="exportWrap" style="display:none">
+    <div class="export-area"><pre id="exportPre"></pre></div>
+    <div style="font-size:10px;color:var(--mid);margin-top:6px;font-style:italic;">Separatore: tabulatore. In Excel: Ctrl+V in cella vuota.</div>
+  </div>
+</section>
+
+<footer>
+  <div>Riferimenti principali</div>
+  <ul class="ref-list">
+    <li>→ <a href="https://pubmed.ncbi.nlm.nih.gov/31351655/" target="_blank">Wolfsberger et al. (2019) – LFM economy Europe, Waste Management</a></li>
+    <li>→ <a href="https://www.sciencedirect.com/science/article/abs/pii/S095965261200306X" target="_blank">Quaghebeur et al. (2013) – Characterisation of LFM materials, J. Clean. Prod.</a></li>
+    <li>→ <a href="https://digital.detritusjournal.com/articles/264" target="_blank">Hernández Parrodi et al. (2019) – MSW-LFM at MSG Belgium, Detritus</a></li>
+    <li>→ <a href="https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2003-01-13;36" target="_blank">D.Lgs. 36/2003 – Discariche di rifiuti</a></li>
+    <li>→ <a href="https://www.reteambiente.it/normativa/51268/dm-ambiente-28-giugno-2024-n-127/" target="_blank">DM 127/2024 – End of Waste inerti</a></li>
+  </ul>
+  <p style="margin-top:10px;">Documento parametrico. Non costituisce perizia o parere professionale. Luglio 2026 · v4.0</p>
+</footer>
+
+<script>
+const TM=700000, SL_D=1.2, IN_D=1.5;
+const F=(n,d=1)=>n.toFixed(d).replace('.',',');
+const FM=(n,d=1)=>(n>=0?'+':'')+F(n,d)+' M€';
+const SC=(el,v)=>el.style.color=v>=0?'var(--green)':'var(--red)';
+const setV=(id,t)=>{const e=document.getElementById(id);if(e)e.textContent=t;};
+const R=id=>+document.getElementById(id).value;
+const C=id=>document.getElementById(id).checked;
+
+// complementary sl
+function clampSL(ch){
+  const rE=document.getElementById('sl_refill_pct'), dE=document.getElementById('sl_disp_pct');
+  let r=+rE.value, d=+dE.value;
+  if(ch==='refill'){if(r+d>100){d=100-r;dE.value=d;}}
+  else{if(r+d>100){r=100-d;rE.value=r;}}
+  setV('sl_refill_v',r+'%'); setV('sl_disp_v',d+'%'); calc();
+}
+// complementary in
+function clampIN(ch){
+  const rE=document.getElementById('in_refill_pct'), dE=document.getElementById('in_disp_pct');
+  let r=+rE.value, d=+dE.value;
+  if(ch==='refill'){if(r+d>100){d=100-r;dE.value=d;}}
+  else{if(r+d>100){r=100-d;rE.value=r;}}
+  const sell=Math.max(0,100-r-d);
+  setV('in_refill_v',r+'%'); setV('in_disp_v',d+'%');
+  setV('in_sell_v',sell+'%');
+  document.getElementById('in_sell_v').style.color=sell>0?'var(--green)':'var(--mid)';
+  calc();
+}
+
+function getP(){
+  const sl_pct=R('sl_pct'), in_pct=R('in_pct'), cdr_pct=R('cdr_pct');
+  const fe_pct=R('fe_pct'), nfe_pct=R('nfe_pct');
+  const wte_pct=Math.max(0,100-sl_pct-in_pct-fe_pct-nfe_pct-cdr_pct);
+  const sl_r=R('sl_refill_pct'), sl_d=100-sl_r;
+  const in_r=R('in_refill_pct'), in_d=R('in_disp_pct');
+  const in_s=Math.max(0,100-in_r-in_d);
+  return{
+    sl_pct,in_pct,cdr_pct,fe_pct,nfe_pct,wte_pct,
+    sl_refill_pct:sl_r,sl_disp_pct:sl_d,
+    sl_disp_cost:R('sl_disp_cost'),
+    in_refill_pct:in_r,in_disp_pct:in_d,in_sell_pct:in_s,
+    in_disp_cost:R('in_disp_cost'),in_sell_price:R('in_sell_price'),
+    fe_price:R('fe_price'),nfe_price:R('nfe_price'),
+    cdr_price:R('cdr_price'),cdr_cost:R('cdr_cost'),
+    wte_cost:R('wte_cost'),wte_rev:R('wte_rev'),
+    c1:C('c1'),r1:R('r1'),c2:C('c2'),r2:R('r2'),c3:C('c3'),r3:R('r3'),
+    c4:C('c4'),r4:R('r4'),c5:C('c5'),r5:R('r5'),c6:C('c6'),r6:R('r6'),
+    nl_vol:R('nl_vol'),nl_tariff:R('nl_tariff'),nl_mgmt:R('nl_mgmt'),
+    nl_density:R('nl_density'),nl_capex:R('nl_capex'),nl_auth:R('nl_auth'),
+    exc_cost:R('exc_cost'),haz_cost:R('haz_cost'),cont_pct:R('cont_pct')
+  };
+}
+
+function calcFrom(p){
+  // mass
+  const sl_t=TM*p.sl_pct/100, in_t=TM*p.in_pct/100;
+  const fe_t=TM*p.fe_pct/100, nfe_t=TM*p.nfe_pct/100;
+  const cdr_t=TM*p.cdr_pct/100, wte_t=TM*p.wte_pct/100;
+  const tot_pct=p.sl_pct+p.in_pct+p.fe_pct+p.nfe_pct+p.cdr_pct+p.wte_pct;
+
+  // pretreat
+  const pts=[{c:p.c1,r:p.r1,d:3},{c:p.c2,r:p.r2,d:1},{c:p.c3,r:p.r3,d:0.5},
+             {c:p.c4,r:p.r4,d:8},{c:p.c5,r:p.r5,d:5},{c:p.c6,r:p.r6,d:0}];
+  const pt_ept=pts.reduce((a,x)=>x.c?a+x.r:a,0);
+  const pt_disc=pts.reduce((a,x)=>x.c?a+x.d:a,0);
+  const pt_M=pt_ept*TM/1e6;
+
+  // WtE
+  const wte_eff=Math.max(0,p.wte_cost-pt_disc);
+  const wte_conf_M=wte_t*wte_eff/1e6;
+  const wte_rev_M=wte_t*p.wte_rev/1e6;
+
+  // metals
+  const fe_M=fe_t*p.fe_price/1e6, nfe_M=nfe_t*p.nfe_price/1e6;
+
+  // CDR
+  const cdr_gross=cdr_t*p.cdr_price/1e6, cdr_cost_M=cdr_t*p.cdr_cost/1e6;
+  const cdr_net=cdr_gross-cdr_cost_M;
+
+  // soil-like
+  const sl_refill_t=sl_t*p.sl_refill_pct/100, sl_disp_t=sl_t*p.sl_disp_pct/100;
+  const sl_cost_M=sl_disp_t*p.sl_disp_cost/1e6;
+  const sl_vol=sl_refill_t/SL_D; // m³ sottratti
+
+  // inerti grezzi
+  const in_refill_t=in_t*p.in_refill_pct/100, in_disp_t=in_t*p.in_disp_pct/100;
+  const in_sell_t=in_t*p.in_sell_pct/100;
+  const in_disp_M=in_disp_t*p.in_disp_cost/1e6;
+  const in_sell_M=in_sell_t*p.in_sell_price/1e6;
+  const in_net_M=in_sell_M-in_disp_M;
+  const in_vol=in_refill_t/IN_D; // m³ sottratti
+
+  // new landfill
+  const nl_net_vol=Math.max(0,p.nl_vol-sl_vol-in_vol);
+  const nl_cap_t=nl_net_vol*p.nl_density;
+  const nl_gross_M=nl_cap_t*p.nl_tariff/1e6;
+  const nl_cost_M=nl_cap_t*p.nl_mgmt/1e6;
+  const nl_margin=nl_gross_M-nl_cost_M;
+
+  // costs
+  const exc_M=TM*p.exc_cost/1e6;
+  const fixed_M=2.94+0.80+2.10;
+  const var_costs=pt_M+wte_conf_M+cdr_cost_M+sl_cost_M+in_disp_M+p.nl_capex+exc_M+p.haz_cost;
+  const cont_M=var_costs*p.cont_pct/100;
+  const total_cost=fixed_M+var_costs+cont_M;
+
+  // revenues
+  const fixed_rev=5.25+1.70;
+  const total_rev=fe_M+nfe_M+cdr_net+in_sell_M+wte_rev_M+fixed_rev+nl_margin;
+  const net=total_rev-total_cost;
+
+  return{sl_t,in_t,fe_t,nfe_t,cdr_t,wte_t,tot_pct,
+    pt_ept,pt_disc,pt_M,wte_eff,wte_conf_M,wte_rev_M,
+    fe_M,nfe_M,cdr_gross,cdr_cost_M,cdr_net,
+    sl_refill_t,sl_disp_t,sl_cost_M,sl_vol,
+    in_refill_t,in_disp_t,in_sell_t,in_disp_M,in_sell_M,in_net_M,in_vol,
+    nl_net_vol,nl_cap_t,nl_gross_M,nl_cost_M,nl_margin,
+    exc_M,cont_M,total_cost,total_rev,net};
+}
+
+function calc(){
+  const p=getP(), r=calcFrom(p);
+
+  // update slider labels
+  setV('sl_pct_v',p.sl_pct+'%'); setV('in_pct_v',p.in_pct+'%');
+  setV('cdr_pct_v',p.cdr_pct+'%');
+  setV('sl_refill_v',p.sl_refill_pct+'%'); setV('sl_disp_v',p.sl_disp_pct+'%');
+  setV('sl_disp_cost_v',p.sl_disp_cost+' €/t');
+  setV('in_refill_v',p.in_refill_pct+'%'); setV('in_disp_v',p.in_disp_pct+'%');
+  setV('in_sell_v',p.in_sell_pct+'%');
+  document.getElementById('in_sell_v').style.color=p.in_sell_pct>0?'var(--green)':'var(--mid)';
+  setV('in_disp_cost_v',p.in_disp_cost+' €/t'); setV('in_sell_price_v',p.in_sell_price+' €/t');
+  setV('fe_pct_v',F(p.fe_pct)+'%'); setV('fe_price_v',p.fe_price+' €/t');
+  setV('nfe_pct_v',F(p.nfe_pct,1)+'%'); setV('nfe_price_v',p.nfe_price.toLocaleString('it')+' €/t');
+  setV('cdr_price_v',p.cdr_price+' €/t'); setV('cdr_cost_v',p.cdr_cost+' €/t');
+  setV('wte_cost_v',p.wte_cost+' €/t'); setV('wte_rev_v',p.wte_rev+' €/t');
+  setV('nl_vol_v',p.nl_vol.toLocaleString('it'));
+  setV('nl_tariff_v',p.nl_tariff+' €/t'); setV('nl_mgmt_v',p.nl_mgmt+' €/t');
+  setV('nl_density_v',F(p.nl_density,2).replace('.',',')+' t/m³');
+  setV('nl_capex_v',F(p.nl_capex)+' M€'); setV('nl_auth_v',p.nl_auth+' anni');
+  setV('exc_cost_v',F(p.exc_cost)+' €/t'); setV('haz_cost_v',F(p.haz_cost)+' M€');
+  setV('cont_pct_v',p.cont_pct+'%');
+
+  // mass bar
+  const tot=p.sl_pct+p.in_pct+p.fe_pct+p.nfe_pct+p.cdr_pct+p.wte_pct;
+  const ok=tot<=100.01;
+  ['sl','in','fe','nfe','cdr','wte'].forEach((k,i)=>{
+    const pct=[p.sl_pct,p.in_pct,p.fe_pct,p.nfe_pct,p.cdr_pct,p.wte_pct][i];
+    const el=document.getElementById('mb_'+k);
+    el.style.width=(ok?pct:Math.max(0,pct))-0+'%';
+    el.textContent=pct>=4?pct.toFixed(1)+'%':'';
+  });
+  const ov=document.getElementById('mb_ov');
+  const over=Math.max(0,tot-100);
+  ov.style.width=over>0?over+'%':'0';
+  ov.textContent=over>0?'⚠+'+over.toFixed(1)+'%':'';
+  const totEl=document.getElementById('mb_tot');
+  totEl.textContent=F(tot,1)+'%';
+  totEl.style.color=Math.abs(tot-100)<0.1?'var(--green)':'var(--red)';
+  setV('mb_wte_lbl',F(p.wte_pct,1)+'% = '+Math.round(r.wte_t).toLocaleString('it')+' t');
+
+  // frazioni
+  setV('r_sl_t',Math.round(r.sl_t).toLocaleString('it')+' t');
+  setV('r_in_t',Math.round(r.in_t).toLocaleString('it')+' t');
+  setV('r_met_t',(Math.round(r.fe_t+r.nfe_t)).toLocaleString('it')+' t');
+  setV('r_cdr_t',Math.round(r.cdr_t).toLocaleString('it')+' t');
+  setV('r_wte_t',Math.round(r.wte_t).toLocaleString('it')+' t');
+  const totEl2=document.getElementById('r_tot_t');
+  totEl2.textContent=Math.round(r.sl_t+r.in_t+r.fe_t+r.nfe_t+r.cdr_t+r.wte_t).toLocaleString('it')+' t';
+
+  // soil-like
+  setV('r_sl_tot',Math.round(r.sl_t).toLocaleString('it')+' t');
+  setV('r_sl_refill',Math.round(r.sl_refill_t).toLocaleString('it')+' t');
+  setV('r_sl_disp',Math.round(r.sl_disp_t).toLocaleString('it')+' t');
+  const slCEl=document.getElementById('r_sl_cost_M');
+  slCEl.textContent='−'+F(r.sl_cost_M)+' M€'; slCEl.style.color=r.sl_cost_M>0?'var(--red)':'var(--mid)';
+
+  // inerti grezzi
+  setV('r_in_tot',Math.round(r.in_t).toLocaleString('it')+' t');
+  setV('r_in_refill',Math.round(r.in_refill_t).toLocaleString('it')+' t');
+  setV('r_in_disp',Math.round(r.in_disp_t).toLocaleString('it')+' t');
+  setV('r_in_sell',Math.round(r.in_sell_t).toLocaleString('it')+' t');
+  const inNetEl=document.getElementById('r_in_net');
+  inNetEl.textContent=FM(r.in_net_M); SC(inNetEl,r.in_net_M);
+
+  // metalli
+  setV('r_fe_t',Math.round(r.fe_t).toLocaleString('it')+' t');
+  setV('r_fe_M','+'+F(r.fe_M)+' M€');
+  setV('r_nfe_t',Math.round(r.nfe_t).toLocaleString('it')+' t');
+  setV('r_nfe_M','+'+F(r.nfe_M)+' M€');
+
+  // CDR
+  setV('r2_cdr_t',Math.round(r.cdr_t).toLocaleString('it')+' t');
+  setV('r_cdr_gross','+'+F(r.cdr_gross)+' M€');
+  setV('r_cdr_cost_M','−'+F(r.cdr_cost_M)+' M€');
+  const cdrEl=document.getElementById('r_cdr_net');
+  cdrEl.textContent=FM(r.cdr_net); SC(cdrEl,r.cdr_net);
+
+  // WtE
+  setV('r2_wte_t',Math.round(r.wte_t).toLocaleString('it')+' t');
+  setV('r_wte_eff',F(r.wte_eff)+' €/t');
+  const wteEffEl=document.getElementById('r_wte_eff');
+  wteEffEl.style.color=r.wte_eff>60?'var(--red)':r.wte_eff>30?'var(--amber)':'var(--green)';
+  setV('r_wte_cost_M','−'+F(r.wte_conf_M)+' M€');
+  setV('r_wte_rev_M','+'+F(r.wte_rev_M)+' M€');
+
+  // pretreat table
+  const pts=[{c:p.c1,r:p.r1},{c:p.c2,r:p.r2},{c:p.c3,r:p.r3},
+             {c:p.c4,r:p.r4},{c:p.c5,r:p.r5},{c:p.c6,r:p.r6}];
+  pts.forEach((pt,i)=>{
+    const n=i+1;
+    setV('v'+n,F(pt.r)+' €/t');
+    const row=document.getElementById('ptr'+n);
+    if(row)row.className=pt.c?'':'off';
+    setV('a'+n,pt.c?F(pt.r):'—');
+    setV('m'+n,pt.c?F(pt.r*TM/1e6)+' M€':'—');
+  });
+  setV('pt_ept',F(r.pt_ept)+' €/t'); setV('pt_M',F(r.pt_M)+' M€');
+  setV('pt_disc','−'+F(r.pt_disc)+' €/t');
+  setV('r_wte_base',p.wte_cost+' €/t'); setV('r_wte_disc','−'+F(r.pt_disc)+' €/t');
+  setV('r_wte_eff2',F(r.wte_eff)+' €/t'); setV('r_wte_t2',Math.round(r.wte_t).toLocaleString('it')+' t');
+
+  // nuova discarica
+  setV('r_nl_gross',p.nl_vol.toLocaleString('it')+' m³');
+  setV('r_nl_sl_vol','−'+Math.round(r.sl_vol).toLocaleString('it')+' m³');
+  setV('r_nl_in_vol','−'+Math.round(r.in_vol).toLocaleString('it')+' m³');
+  setV('r_nl_net_vol',Math.round(r.nl_net_vol).toLocaleString('it')+' m³');
+  setV('r_nl_margin','+'+F(r.nl_margin)+' M€');
+  setV('r_exc',F(r.exc_M)+' M€');
+
+  // cost table
+  setV('t_exc',F(r.exc_M)); setV('t_haz',F(p.haz_cost));
+  setV('t_pt',F(r.pt_M)); setV('t_sl_cost',F(r.sl_cost_M));
+  setV('t_in_cost',F(r.in_disp_M)); setV('t_wte',F(r.wte_conf_M));
+  setV('t_cdr_cost',F(r.cdr_cost_M)); setV('t_capex',F(p.nl_capex));
+  setV('t_cont',F(r.cont_M)); setV('t_tot_cost',F(r.total_cost));
+
+  // rev table
+  setV('t_fe',F(r.fe_M)); setV('t_nfe',F(r.nfe_M));
+  setV('t_cdr_net',F(r.cdr_net)); setV('t_in_sell',F(r.in_sell_M));
+  setV('t_wte_rev',F(r.wte_rev_M)); setV('t_nl_margin',F(r.nl_margin));
+  setV('t_tot_rev',F(r.total_rev));
+
+  // comparison
+  setV('c_cost',F(r.total_cost)+' M€'); setV('c_rev',F(r.total_rev)+' M€');
+  const cNetEl=document.getElementById('c_net');
+  cNetEl.textContent=FM(r.net); SC(cNetEl,r.net);
+
+  // base scenario live
+  const bEl=document.getElementById('sc_base');
+  bEl.textContent=FM(r.net); SC(bEl,r.net);
+  setV('sc_base_d','Costi: '+F(r.total_cost)+' M€ | Ricavi: '+F(r.total_rev)+' M€');
+
+  // pess/opti
+  ['pess','opti'].forEach(k=>{
+    const rr=calcFrom(buildP(PRESETS[k]));
+    const el=document.getElementById('sc_'+k);
+    el.textContent=FM(rr.net); SC(el,rr.net);
+    setV('sc_'+k+'_d','Costi: '+F(rr.total_cost)+' M€ | Ricavi: '+F(rr.total_rev)+' M€');
+  });
+}
+
+// ── PRESETS ──
+const PRESETS={
+  pess:{sl_pct:45,in_pct:15,cdr_pct:0,fe_pct:1.5,nfe_pct:0.2,
+    sl_refill_pct:60,sl_disp_pct:40,sl_disp_cost:80,
+    in_refill_pct:0,in_disp_pct:90,in_sell_pct:10,in_disp_cost:120,in_sell_price:0,
+    fe_price:90,nfe_price:900,cdr_price:20,cdr_cost:10,
+    wte_cost:90,wte_rev:0,
+    c1:true,r1:5,c2:true,r2:2,c3:false,r3:2,c4:false,r4:12,c5:false,r5:7,c6:true,r6:1.5,
+    nl_vol:500000,nl_tariff:65,nl_mgmt:55,nl_density:0.75,nl_capex:8,nl_auth:7,
+    exc_cost:14,haz_cost:2,cont_pct:20},
+  base:{sl_pct:30,in_pct:10,cdr_pct:0,fe_pct:2,nfe_pct:0.4,
+    sl_refill_pct:100,sl_disp_pct:0,sl_disp_cost:0,
+    in_refill_pct:0,in_disp_pct:80,in_sell_pct:20,in_disp_cost:70,in_sell_price:5,
+    fe_price:120,nfe_price:1200,cdr_price:25,cdr_cost:8,
+    wte_cost:55,wte_rev:0,
+    c1:true,r1:4,c2:true,r2:1.5,c3:true,r3:2,c4:true,r4:12,c5:true,r5:7,c6:true,r6:1,
+    nl_vol:750000,nl_tariff:90,nl_mgmt:55,nl_density:0.75,nl_capex:5,nl_auth:4,
+    exc_cost:11,haz_cost:0.7,cont_pct:15},
+  opti:{sl_pct:25,in_pct:8,cdr_pct:15,fe_pct:2.5,nfe_pct:0.6,
+    sl_refill_pct:100,sl_disp_pct:0,sl_disp_cost:0,
+    in_refill_pct:0,in_disp_pct:60,in_sell_pct:40,in_disp_cost:50,in_sell_price:8,
+    fe_price:150,nfe_price:1500,cdr_price:40,cdr_cost:6,
+    wte_cost:30,wte_rev:5,
+    c1:true,r1:3.5,c2:true,r2:1,c3:true,r3:1.5,c4:true,r4:10,c5:true,r5:6,c6:true,r6:0.8,
+    nl_vol:850000,nl_tariff:120,nl_mgmt:50,nl_density:0.85,nl_capex:4,nl_auth:3,
+    exc_cost:9,haz_cost:0.3,cont_pct:12}
+};
+
+function buildP(s){
+  const wte_pct=Math.max(0,100-s.sl_pct-s.in_pct-s.fe_pct-s.nfe_pct-s.cdr_pct);
+  return{...s,wte_pct,in_sell_pct:Math.max(0,100-s.in_refill_pct-s.in_disp_pct)};
+}
+
+function applyP(key){
+  const s=PRESETS[key];
+  Object.entries(s).forEach(([k,v])=>{
+    const el=document.getElementById(k);
+    if(el){el.type==='checkbox'?el.checked=v:el.value=v;}
+  });
+  setV('sl_refill_v',s.sl_refill_pct+'%');
+  setV('sl_disp_v',(100-s.sl_refill_pct)+'%');
+  setV('in_refill_v',s.in_refill_pct+'%');
+  setV('in_disp_v',s.in_disp_pct+'%');
+  setV('in_sell_v',Math.max(0,100-s.in_refill_pct-s.in_disp_pct)+'%');
+}
+function preset(k){applyP(k);calc();}
+
+// ── EXPORT TSV ──
+let _txt='';
+function genExport(){
+  const p=getP(),r=calcFrom(p);
+  const now=new Date();
+  const dt=now.toLocaleDateString('it-IT')+' '+now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  const T='\t',N='\n',S='─'.repeat(55);
+  let o='BUSINESS CASE LANDFILL MINING v4\n';
+  o+='Discarica RSU: 1.000.000 m³ / 50.000 m² / 700.000 t\n';
+  o+='Generato:'+T+dt+N+N;
+  o+=S+N+'DENSITÀ ASSUNTE NEL MODELLO'+N+S+N;
+  o+='Materiale'+T+'Densità (t/m³)'+T+'Note'+N;
+  o+='Rifiuto in posto (estratto)'+T+'0,70'+T+'RSU storica 20-40 anni; range 0,65-1,00'+N;
+  o+='Soil-like reinterrato'+T+'1,20'+T+'Materiale stabilizzato compatto'+N;
+  o+='Inerti grezzi reinterrati'+T+'1,50'+T+'Pietre, vetro, ceramica sfuse'+N;
+  o+='Combustibile sfuso'+T+'0,20'+T+'Bassa densità, eterogeneo'+N;
+  o+='Rifiuto nuovo nella discarica'+T+F(p.nl_density,2)+T+'Da cursore'+N+N;
+  o+=S+N+'BILANCIO DI MASSA'+N+S+N;
+  o+='Frazione'+T+'% massa'+T+'Tonnellate'+N;
+  o+='Soil-like (<20mm)'+T+p.sl_pct+T+Math.round(r.sl_t).toLocaleString('it')+N;
+  o+='  di cui reinterrata'+T+p.sl_refill_pct+T+Math.round(r.sl_refill_t).toLocaleString('it')+N;
+  o+='  di cui smaltita'+T+p.sl_disp_pct+T+Math.round(r.sl_disp_t).toLocaleString('it')+N;
+  o+='Inerti grezzi (>20mm)'+T+p.in_pct+T+Math.round(r.in_t).toLocaleString('it')+N;
+  o+='  di cui reinterrati'+T+p.in_refill_pct+T+Math.round(r.in_refill_t).toLocaleString('it')+N;
+  o+='  di cui smaltiti'+T+p.in_disp_pct+T+Math.round(r.in_disp_t).toLocaleString('it')+N;
+  o+='  di cui venduti EoW'+T+p.in_sell_pct+T+Math.round(r.in_sell_t).toLocaleString('it')+N;
+  o+='Metalli ferrosi'+T+p.fe_pct+T+Math.round(r.fe_t).toLocaleString('it')+N;
+  o+='Metalli non ferrosi'+T+p.nfe_pct+T+Math.round(r.nfe_t).toLocaleString('it')+N;
+  o+='CDR separato'+T+p.cdr_pct+T+Math.round(r.cdr_t).toLocaleString('it')+N;
+  o+='Combustibile → WtE'+T+F(p.wte_pct,1)+T+Math.round(r.wte_t).toLocaleString('it')+N;
+  o+='TOTALE'+T+'100'+T+'700.000'+N+N;
+  o+=S+N+'IPOTESI ECONOMICHE'+N+S+N;
+  o+='Costo smalt. soil-like (€/t)'+T+p.sl_disp_cost+N;
+  o+='Costo smalt. inerti grezzi (€/t)'+T+p.in_disp_cost+N;
+  o+='Prezzo aggregato EoW inerti (€/t)'+T+p.in_sell_price+N;
+  o+='Prezzo rottame Fe (€/t)'+T+p.fe_price+N;
+  o+='Prezzo metalli non-Fe (€/t)'+T+p.nfe_price+N;
+  o+='Prezzo CDR (€/t)'+T+p.cdr_price+N;
+  o+='Costo WtE base (€/t)'+T+p.wte_cost+N;
+  o+='Costo WtE effettivo (€/t)'+T+F(r.wte_eff)+N;
+  o+='Tariffa nuova discarica (€/t)'+T+p.nl_tariff+N;
+  o+='Costo gestione nuova discarica (€/t)'+T+p.nl_mgmt+N;
+  o+='Volume lordo liberabile (m³)'+T+p.nl_vol.toLocaleString('it')+N;
+  o+='Vol. soil-like reinterrato (m³)'+T+Math.round(r.sl_vol).toLocaleString('it')+N;
+  o+='Vol. inerti grezzi reinterrati (m³)'+T+Math.round(r.in_vol).toLocaleString('it')+N;
+  o+='Volume utile netto nuova discarica (m³)'+T+Math.round(r.nl_net_vol).toLocaleString('it')+N+N;
+  o+=S+N+'STRUTTURA COSTI (M€)'+N+S+N;
+  o+='Voce'+T+'M€'+N;
+  o+='Caratterizzazione, progettazione, iter autorizzativo'+T+'2,94'+N;
+  o+='Scavo e movimentazione'+T+F(r.exc_M)+N;
+  o+='Smaltimento rifiuti pericolosi'+T+F(p.haz_cost)+N;
+  o+='Pretrattamenti attivi (totale)'+T+F(r.pt_M)+N;
+  o+='Smaltimento soil-like'+T+F(r.sl_cost_M)+N;
+  o+='Smaltimento inerti grezzi'+T+F(r.in_disp_M)+N;
+  o+='Conferimento WtE (effettivo)'+T+F(r.wte_conf_M)+N;
+  o+='Trattamento CDR aggiuntivo'+T+F(r.cdr_cost_M)+N;
+  o+='Capex adeguamento sito nuova discarica'+T+F(p.nl_capex)+N;
+  o+='Ripristino e monitoraggio'+T+'0,80'+N;
+  o+='PM + H&S + assicurazioni'+T+'2,10'+N;
+  o+='Contingency ('+p.cont_pct+'%)'+T+F(r.cont_M)+N;
+  o+='TOTALE COSTI'+T+F(r.total_cost)+N+N;
+  o+=S+N+'STRUTTURA RICAVI (M€)'+N+S+N;
+  o+='Voce'+T+'M€'+N;
+  o+='Metalli ferrosi'+T+F(r.fe_M)+N;
+  o+='Metalli non ferrosi'+T+F(r.nfe_M)+N;
+  o+='CDR netto'+T+F(r.cdr_net)+N;
+  o+='Aggregati EoW inerti grezzi'+T+F(r.in_sell_M)+N;
+  o+='Ricavo energia WtE'+T+F(r.wte_rev_M)+N;
+  o+='Eliminazione post-gestione (VA 30a r=4%)'+T+'5,25'+N;
+  o+='Eliminazione monitoraggio percolato (VA)'+T+'1,70'+N;
+  o+='Margine netto nuova discarica (vita utile)'+T+F(r.nl_margin)+N;
+  o+='TOTALE RICAVI'+T+F(r.total_rev)+N+N;
+  o+=S+N+'RISULTATO'+N+S+N;
+  o+='Totale costi (M€)'+T+F(r.total_cost)+N;
+  o+='Totale ricavi (M€)'+T+F(r.total_rev)+N;
+  o+='RISULTATO NETTO (M€)'+T+FM(r.net)+N;
+  o+='Risultato per tonnellata (€/t)'+T+F(r.net*1e6/700000,0)+N;
+  o+=S+N+'Documento parametrico. Non costituisce perizia o parere professionale.'+N;
+  _txt=o;
+  document.getElementById('exportPre').textContent=o;
+  document.getElementById('exportWrap').style.display='block';
+  document.getElementById('btnCopy').style.display='inline-block';
+  document.getElementById('copyOk').style.display='none';
+}
+function copyExport(){
+  if(!_txt)return;
+  navigator.clipboard.writeText(_txt).then(()=>{
+    const fb=document.getElementById('copyOk');
+    fb.style.display='inline';setTimeout(()=>fb.style.display='none',2500);
+  }).catch(()=>{
+    const pre=document.getElementById('exportPre');
+    const sel=window.getSelection(),range=document.createRange();
+    range.selectNodeContents(pre);sel.removeAllRanges();sel.addRange(range);
+    document.execCommand('copy');
+    const fb=document.getElementById('copyOk');
+    fb.style.display='inline';setTimeout(()=>fb.style.display='none',2500);
+  });
+}
+
+document.querySelectorAll('input[type=range]').forEach(el=>el.addEventListener('input',calc));
+calc();
+</script>
+</body>
+</html>
